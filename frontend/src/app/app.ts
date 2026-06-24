@@ -1,0 +1,14 @@
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { Header } from "./shared/header/header";
+
+@Component({
+  selector: 'app-root',
+  imports: [RouterOutlet, Header],
+  templateUrl: './app.html',
+  styleUrl: './app.css'
+})
+export class App {
+  titulo : string = 'Proyecto Angular (Clase)';
+  autor: string = 'Bernal Linares César Arturo';
+}
