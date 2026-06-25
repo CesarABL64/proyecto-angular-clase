@@ -9,6 +9,7 @@ import { Header } from "./shared/header/header";
   styleUrl: './app.css'
 })
 export class App {
-  titulo : string = 'Proyecto Angular (Clase)';
-  autor: string = 'Bernal Linares César Arturo';
+  tituloAplicacion : string = 'Entrega final del proyecto de Angular';
+  nombreAutor: string = 'Mateo Medina Alexis Antonio';
 }
+

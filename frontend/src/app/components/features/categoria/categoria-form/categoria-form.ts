@@ -12,23 +12,23 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './categoria-form.css',
 })
 export class CategoriaForm implements OnInit{
-  readonly titulo: string = 'Categorias Form';
-  laCategoria = signal<Categoria> (new Categoria());
+  readonly tituloFormulario: string = 'Categorias Form';
+  categoriaActual = signal<Categoria> (new Categoria());
 
-  id = input<number>();
-  private router = inject(Router);
-  private service = inject(CategoriaService);
+  idRuta = input<number>();
+  private enrutador = inject(Router);
+  private categoriaService = inject(CategoriaService);
 
   ngOnInit(): void {
     this.cargarCategoriaExistente();
   }
 
   private cargarCategoriaExistente(): void {
-    const elId = this.id();
-    if (elId){
-      this.service.leerCategoria(elId).subscribe(
+    const idCategoria = this.idRuta();
+    if (idCategoria){
+      this.categoriaService.obtenerCategoriaPorId(idCategoria).subscribe(
         {
-        next: (laCategoriaLeida) => this.laCategoria.set(laCategoriaLeida),
+        next: (categoriaLeida) => this.categoriaActual.set(categoriaLeida),
         error: (err) => console.error('Error al obtener la categoria', err)
       }
     );
@@ -38,12 +38,12 @@ export class CategoriaForm implements OnInit{
 
 
   registrarCategoria():void{
-    this.service.crearCategoria(this.laCategoria()).subscribe({
-      next : (cat) => {
-        this.router.navigate(['/listaDeCategoria']);
+    this.categoriaService.registrarCategoria(this.categoriaActual()).subscribe({
+      next : (categoriaCreada) => {
+        this.enrutador.navigate(['/listaDeCategoria']);
         Swal.fire({
           title: 'Categoria Registrada!',
-          text: `La categoria ${cat.nombreCategoria} ha sido registrada con éxito.`,
+          text: `La categoria ${categoriaCreada.nombreCategoria} ha sido registrada con éxito.`,
           icon: 'success',
         });
        },
@@ -54,12 +54,12 @@ export class CategoriaForm implements OnInit{
   }
 
   actualizarCategoria(): void{
-    this.service.actualizarCategoria(this.laCategoria()).subscribe({
+    this.categoriaService.actualizarCategoria(this.categoriaActual()).subscribe({
       next : () => {
-        this.router.navigate(['/listaDeCategoria']);
+        this.enrutador.navigate(['/listaDeCategoria']);
         Swal.fire({
           title: 'Categoria Actualizada!',
-          text: `La categoria ${this.laCategoria().nombreCategoria} ha sido actualizada con éxito.`,
+          text: `La categoria ${this.categoriaActual().nombreCategoria} ha sido actualizada con éxito.`,
           icon: 'success',
         });
        },

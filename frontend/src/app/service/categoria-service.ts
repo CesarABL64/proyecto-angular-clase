@@ -7,43 +7,39 @@ import { Categoria } from '../model/categoria';
   providedIn: 'root',
 })
 export class CategoriaService {
-  private http = inject(HttpClient);
-  private readonly urlEndPoint = "http://localhost:8080/api/v1/categorias/categoria";
-  private httpHeaders = new HttpHeaders({
+  private clienteHttp = inject(HttpClient);
+  private readonly urlBaseCategorias = "http://localhost:8080/api/v1/categorias/categoria";
+  private cabecerasHttp = new HttpHeaders({
     'Content-Type':'application/json'
   });
 
-  mostrarCategorias(): Observable<Categoria[]> {
-    return this.http.get<Categoria[]>(this.urlEndPoint);
+  obtenerCategorias(): Observable<Categoria[]> {
+    return this.clienteHttp.get<Categoria[]>(this.urlBaseCategorias);
   }
 
-   //mostrar una ctaegoria
-  leerCategoria(id : number):Observable<Categoria>{
-    return this.http.get<Categoria>(`${this.urlEndPoint}/${id}`)
+  obtenerCategoriaPorId(id : number):Observable<Categoria>{
+    return this.clienteHttp.get<Categoria>(`${this.urlBaseCategorias}/${id}`)
   }
 
-  //crear categoria
-  crearCategoria(categoria : Categoria) : Observable<Categoria>{
-    return this.http.post<Categoria>
-    (this.urlEndPoint, categoria,
-      {headers: this.httpHeaders})
+  registrarCategoria(categoria : Categoria) : Observable<Categoria>{
+    return this.clienteHttp.post<Categoria>
+    (this.urlBaseCategorias, categoria,
+      {headers: this.cabecerasHttp})
 
   }
 
-    //eliminar categoria
   eliminarCategoria(id : number) : Observable<Categoria>{
-    return this.http.delete<Categoria>
-    (`${this.urlEndPoint}/${id}`,
-      {headers: this.httpHeaders}
+    return this.clienteHttp.delete<Categoria>
+    (`${this.urlBaseCategorias}/${id}`,
+      {headers: this.cabecerasHttp}
      );
   }
 
-    //actualizar
   actualizarCategoria(categoria : Categoria) : Observable<Categoria>{
-    return this.http.put<Categoria>(
-      `${this.urlEndPoint}/${categoria.idCategoria}`,
+    return this.clienteHttp.put<Categoria>(
+      `${this.urlBaseCategorias}/${categoria.idCategoria}`,
       categoria,
-      {headers: this.httpHeaders}
+      {headers: this.cabecerasHttp}
     );
   }
 

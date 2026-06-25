@@ -11,20 +11,19 @@ import { RouterLink } from "@angular/router";
   styleUrl: './lista-de-categorias.css',
 })
 export class ListaDeCategorias implements OnInit {
-  readonly titulo: string = 'Categorias de Productos';
-  listaDeCategorias = signal<Categoria[]>([]);
-  //inyectar el servicio
-  private service = inject(CategoriaService);
+  readonly tituloPagina: string = 'Categorias de Productos';
+  categoriasRegistradas = signal<Categoria[]>([]);
+  private categoriaService = inject(CategoriaService);
 
   ngOnInit(): void {
     this.cargarCategorias();
   }
 
   private cargarCategorias(): void {
-    this.service.mostrarCategorias().subscribe({
-      next: (lasCategorias) => {
-        this.listaDeCategorias.set(lasCategorias);
-        console.log('Categorias cargadas:', lasCategorias);
+    this.categoriaService.obtenerCategorias().subscribe({
+      next: (datosRecibidos) => {
+        this.categoriasRegistradas.set(datosRecibidos);
+        console.log('Categorias cargadas:', datosRecibidos);
       },
       error: (err) => console.error('Error al obtener las categorias', err),
     });
@@ -41,11 +40,10 @@ export class ListaDeCategorias implements OnInit {
       confirmButtonText: 'Sí, eliminalo!',
     }).then((result) => {
       if (result.isConfirmed)
-        this.service.eliminarCategoria(categoria.idCategoria).subscribe({
+        this.categoriaService.eliminarCategoria(categoria.idCategoria).subscribe({
           next: () => {
-            // Eliminar la categoría de la lista local después de eliminarla del servidor
-            this.listaDeCategorias.set(
-              this.listaDeCategorias().filter((c) => c.idCategoria !== categoria.idCategoria)
+            this.categoriasRegistradas.set(
+              this.categoriasRegistradas().filter((c) => c.idCategoria !== categoria.idCategoria)
             );
             Swal.fire({
               title: 'Eliminar Categoria!',

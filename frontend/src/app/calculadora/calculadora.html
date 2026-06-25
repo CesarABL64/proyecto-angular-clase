@@ -1,16 +1,16 @@
 <div class="container mb-3">
   <div class="card text-primary text-center">
     <div class="card-header">
-      <h2 class="card-title">{{ titulo }}</h2>
+      <h2 class="card-title">{{ tituloCalculadora }}</h2>
     </div>
     <div class="card-body text-succes">
       <form>
         <div class="mb-3">
-          <label for="numeroUno" class="form-label">Numero 1</label>
+           <label for="primerNumero" class="form-label">Numero 1</label>
           <input
             type="number"
             class="form-control text-center text-primary"
-            id="numeroUno"
+            id="primerNumero"
             min="1"
             max="100"
             placeholder="5"
@@ -18,11 +18,11 @@
         </div>
 
         <div class="mb-3">
-          <label for="numeroDos" class="form-label">Numero 2</label>
+           <label for="segundoNumero" class="form-label">Numero 2</label>
           <input
             type="number"
             class="form-control text-center text-primary"
-            id="numeroDos"
+            id="segundoNumero"
             min="1"
             max="100"
             placeholder="5"
@@ -39,7 +39,7 @@
       </form>
     </div>
     <div class="card-footer text-info">
-      Aqui aparecra el resultado de las operaciones = {{ resultado }}
+       Aqui aparecra el resultado de las operaciones = {{ resultadoOperacion }}
     </div>
   </div>
 </div>

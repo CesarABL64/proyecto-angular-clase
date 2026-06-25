@@ -1,59 +1,109 @@
-# Ejercicio1
-
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.11.
-
-## Development server
-
-To start a local development server, run:
-
-```bash
-ng serve
+```
+ ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄ 
+▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
+▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀▀▀ 
+▐░▌          ▐░▌          ▐░▌          ▐░▌       ▐░▌▐░▌          
+▐░▌          ▐░█▄▄▄▄▄▄▄▄▄ ▐░▌          ▐░▌       ▐░▌▐░█▄▄▄▄▄▄▄▄▄ 
+▐░▌          ▐░░░░░░░░░░░▌▐░▌          ▐░▌       ▐░▌▐░░░░░░░░░░░▌
+▐░▌          ▐░█▀▀▀▀▀▀▀▀▀ ▐░▌          ▐░▌       ▐░▌ ▀▀▀▀▀▀▀▀▀█░▌
+▐░▌          ▐░▌          ▐░▌          ▐░▌       ▐░▌          ▐░▌
+▐░█▄▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄▄▄ 
+▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
+ ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀ 
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+# Frontend — MiniInventario
 
-## Code scaffolding
+**Angular 21.2 + Bootstrap 5 + SweetAlert2**
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+> Lo que ves en el navegador. La parte bonita del proyecto.
 
-```bash
-ng generate component component-name
-```
+---
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Arrancar
 
 ```bash
-ng generate --help
+npm install      # solo la primera vez
+npm start        # dev server en http://localhost:4200
 ```
 
-## Building
+## Scripts utiles
 
-To build the project run:
+| Comando        | Para que sirve                          |
+|----------------|-----------------------------------------|
+| `npm start`    | Servidor de desarrollo                  |
+| `npm test`     | Tests con Vitest                        |
+| `npm run build`| Build de produccion en `dist/`          |
+| `npm run watch`| Build con watch                         |
 
-```bash
-ng build
+---
+
+## Arquitectura
+
+### Standalone + Zoneless
+
+- Componentes standalone con `imports` en el decorador.
+- Sin `NgZone` ni `zone.js`. Usa `provideZonelessChangeDetection()`.
+- Route params via `input<T>()` gracias a `withComponentInputBinding()`.
+
+### Estado
+
+- **Signals** para estado local (`signal()`, `input()`).
+- **RxJS** para llamadas HTTP con `.subscribe()`.
+- Template-driven forms con `FormsModule` + `[(ngModel)]`.
+
+### Componentes
+
+| Componente               | Selector                  | Ruta                    |
+|--------------------------|---------------------------|-------------------------|
+| `App`                    | `app-root`                | `/`                     |
+| `Header`                 | `app-header`              | (global)                |
+| `Home`                   | `app-home`                | `/home`                 |
+| `ListaDeCategorias`      | `app-lista-de-categorias` | `/listaDeCategoria`     |
+| `CategoriaForm`          | `app-categoria-form`      | `/categoriaForm`        |
+| `CategoriaForm` (edit)   | `app-categoria-form`      | `/categoriaForm/:id`    |
+| `Footer`                 | `app-footer`              | (solo en Home)          |
+| `Calculadora`            | `app-calculadora`         | (no enrutada)           |
+
+### Terceros
+
+- **Bootstrap 5.3.8** — incluido en `angular.json`, disponible global.
+- **SweetAlert2** — para dialogos de confirmacion y notificaciones.
+- **FontAwesome 7.2** — iconos solidos (free-solid-svg-icons).
+
+---
+
+## Estilo de codigo
+
+```typescript
+// DI con inject(), nunca con constructor
+private service = inject(CategoriaService);
+
+// Signals para estado
+categoriasRegistradas = signal<Categoria[]>([]);
+idRuta = input<number>();
+
+// Sin NgModules, imports en @Component
+@Component({
+  selector: 'app-mi-componente',
+  imports: [FormsModule, RouterLink],
+  templateUrl: './mi-componente.html',
+  styleUrl: './mi-componente.css',
+})
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+---
 
-## Running unit tests
+## Backend
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
+El frontend se comunica con una API Spring Boot en:
 ```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
+http://localhost:8080/api/v1/categorias/categoria
 ```
+(Configurado en `service/categoria-service.ts`)
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Requiere CORS habilitado en el backend via `@CrossOrigin(origins = "http://localhost:4200")`.
 
-## Additional Resources
+---
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Frontend del proyecto **MiniInventario** — Hecho en el IPN.

@@ -3,7 +3,7 @@
     <div class="card border-succes text-center">
       <div class="card-header text-primary">
         <h2 class="card-title">
-          {{titulo}}
+          {{tituloPagina}}
         </h2>
       </div>
       <div class="card-body text-primary">
@@ -17,7 +17,7 @@
             </tr>
           </thead>
           <tbody>
-            @for (lc of listaDeCategorias(); track lc.idCategoria) {
+            @for (lc of categoriasRegistradas(); track lc.idCategoria) {
               <tr>
                 <td>{{lc.idCategoria}}</td>
                 <td>{{lc.nombreCategoria}}</td>
